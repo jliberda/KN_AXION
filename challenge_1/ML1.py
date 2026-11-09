@@ -10,53 +10,46 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 
+# do EDA
+import matplotlib.pyplot as plt
+import seaborn as sns # heatmapa
+
 # ============================================================
 # 1. EDA - EXPLORATORY DATA ANALYSIS
 # ============================================================
-with open('heart.csv') as plik:
-    heart = [x.strip().split(',') for x in plik]
 
-# zlicz ile jest osób z chorobą serca (c), a ile jest osób zdrowych (z).
-z = c = 0
+df = pd.read_csv("heart.csv") # df - pandas Data Frame
 
-# sprawdź czy dane są kompletne.
-puste = 0
+# print("(Ilość wierszy, ilość kolumn): ", df.shape)
 
-# oblicz średni wiek dla osób chorych i zdrowych.
-c_wiek = z_wiek = 0
+# print("\ntypy danych, czy gdzieś jest null?, kolumny, wiersze:")
+# print(df.info())
 
-# najmłodszy i najstarszy wiek osoby
-c_wiek_max = z_wiek_max = 0
-c_wiek_min = z_wiek_min = float('inf')
+# print("\nstatystyki:")
+# print(df.describe())
 
-for age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, target in heart[1:]:
-    if '' in [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, target]:
-        puste += 1
-    if target == '1':
-        c += 1
-        c_wiek += int(age)
-        c_wiek_min = min(c_wiek_min, int(age))
-        c_wiek_max = max(c_wiek_max, int(age))
-    else:
-        z += 1
-        z_wiek += int(age)
-        z_wiek_min = min(z_wiek_min, int(age))
-        z_wiek_max = max(z_wiek_max, int(age))
+# print("\nbrakujące wartości:")
+# print(df.isnull().sum())
 
-print('=== EDA ===')
-print('Liczba osób chorych:', c)
-print('Liczba osób zdrowych:', z)
-print('Wiersze z brakami danych:', puste)
-print('Średni wiek osób chorych:', round(c_wiek/c, 2))
-print('Średni wiek osób zdrowych:', round(z_wiek/z, 2))
-print('Wiek osób chorych:', str(c_wiek_min)+'-'+str(c_wiek_max))
-print('Wiek osób zdrowych:', str(z_wiek_min)+'-'+str(z_wiek_max))
+# print("\nduplikaty:")
+# print(df.duplicated().sum()) # 723 DUPLIKATY!!!
+df = df.drop_duplicates() # usuwa duplikaty
+# print(df.shape)
+# print(df.duplicated().sum())
 
+# print("\nhistogramy:")
+# print(df.hist())
+
+# print("\nheatmapa:")
+# sns.heatmap(df.corr(numeric_only=True), annot=True)
+# plt.figure(figsize=(12, 10))
+# sns.heatmap(df.corr(numeric_only=True), annot=True, fmt='.1f')
+# plt.savefig("heatmap.png")
+# print("zapisana w folderze jako 'heatmap.png'")
 
 # ============================================================
 # 2. PRZYGOTOWANIE DANYCH
 # ============================================================
-df = pd.read_csv("heart.csv") # df - pandas Data Frame
 
 #PYTANIE: Czy usunięcie trestbps (resting blood pressure) pogorszy przewidywania modelu AI?
 print('HIPOTEZA: Model będzie gorzej przewidywał czy dany pacjent ma chorobę serca gdy usunę kolumnę trestbps.')
@@ -113,9 +106,9 @@ print(classification_report(t_test_bez, predictions_bez))
 roznica = accuracy - accuracy_bez
 
 print('\n=== PORÓWNANIE ===\n')
-print('Accuracy z trestbps:', accuracy)
-print('Accuracy bez trestbps:', accuracy_bez)
-print('Różnica:', roznica, '\n')
+print('Accuracy z trestbps:', round(accuracy*100,2))
+print('Accuracy bez trestbps:', round(accuracy_bez*100,2))
+print('Różnica:', round(roznica*100,2), '\n')
 
 if accuracy_bez < accuracy:
     print('Po usunięciu trestbps accuracy spadło. Hipoteza potwierdzona.')
@@ -128,4 +121,5 @@ else:
 
 # Materiały pomocnicze:
 # Dataset: https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset
+# EDA Tutorial: https://www.geeksforgeeks.org/data-analysis/exploratory-data-analysis-in-python/
 # Tutorial: https://pytutorial.com/how-to-make-an-ai-in-python-step-by-step/
