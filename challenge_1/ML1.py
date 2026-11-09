@@ -40,12 +40,14 @@ df = df.drop_duplicates() # usuwa duplikaty
 # print("\nhistogramy:")
 # print(df.hist())
 
+# które kolumny są najsilniej ze sobą skorelowane?
+# Jeśli dwie cechy są bardzo silnie skorelowane, można usunąć jedną z nich.
+# Dzięki temu można ograniczyć liczbę cech i uprościć model.
 # print("\nheatmapa:")
+# plt.figure(figsize=(20, 20))
 # sns.heatmap(df.corr(numeric_only=True), annot=True)
-# plt.figure(figsize=(12, 10))
-# sns.heatmap(df.corr(numeric_only=True), annot=True, fmt='.1f')
-# plt.savefig("heatmap.png")
-# print("zapisana w folderze jako 'heatmap.png'")
+# plt.show()
+# oldpeak i slope - najbardziej skorelowane: ok. -0.6. średnio skorelowane, usunęłabym jedną z nich gdyby skorelowanie wyniosło -1.
 
 # ============================================================
 # 2. PRZYGOTOWANIE DANYCH
