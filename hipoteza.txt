@@ -1,0 +1,4 @@
+hipoteza:
+Dla danych w tabeli, w której sąsiednie cechy features są silnie skorelowane, anzatz z topologią linijową da takie samo bądź lepsze accuracy niż ansatz z bardziej rozbudowaną topologią, która często wymaga większego circiud depth od topologii liniowej.
+
+Ta zalerzność powinna wynikać a tego, że w topologii lińjowej, CNOTy łączą ze sobą sąsiednie features, inne topologie powinny działać najlepiej dla danych będących w odpowiednim formacie. np. dla danych gdzie sąsiednie features oraz pierwsza i ostatnia feature jest skorelowana, ring powinno być najlepszym wyborem.
